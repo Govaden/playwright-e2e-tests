@@ -1,8 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Test artifacts & reports
+reports/
+test_results/
+test-results/
 
 # Playwright
 node_modules/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
+playwright-report/
+blob-report/
+playwright/.cache/
+playwright/.auth/
