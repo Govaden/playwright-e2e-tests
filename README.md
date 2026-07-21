@@ -1,43 +1,37 @@
-# 🎭 playwright-pytest-sandbox
+# playwright-e2e-tests
 
-A practice repository for learning and experimenting with end-to-end UI test automation using **Playwright** and **pytest**, built against [SauceDemo](https://www.saucedemo.com/).
+[![Playwright Tests](https://github.com/Govaden/playwright-e2e-tests/actions/workflows/playwright.yml/badge.svg)](https://github.com/Govaden/playwright-e2e-tests/actions/workflows/playwright.yml)
 
-![Playwright Tests](https://github.com/Govaden/playwright-pytest-sandbox/actions/workflows/playwright.yml/badge.svg)
-
----
-
-## 📌 About
-
-This repo contains a collection of automated UI tests structured around the **Page Object Model (POM)** pattern. It covers login flows, cart management, and checkout — with parametrized test cases, xfail markers for known broken users, and full tracing/video/screenshot capture on failure.
+End-to-end UI test suite for [SauceDemo](https://www.saucedemo.com/), built with **Playwright** and **pytest** using the **Page Object Model (POM)**. Covers authentication, cart management, and the checkout flow, with parametrized cases, `xfail` markers for known-broken demo users, and trace/video/screenshot capture on failure.
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
-playwright-pytest-sandbox/
+playwright-e2e-tests/
 ├── pages/
 │   ├── login_page.py       # LoginPage — locators & actions for the login screen
 │   ├── inventory_page.py   # InventoryPage — product listing, sorting, menu, logout
 │   ├── cart_page.py        # CartPage — cart items, removal
 │   └── checkout_page.py    # CheckoutPage — checkout form, overview, confirmation
 ├── tests/
-│   ├── test_auth.py        # Login (negative/positive) and logout tests
-│   ├── test_cart.py        # Add to cart and remove item tests
-│   └── test_checkout.py    # End-to-end checkout flow tests
+│   ├── test_auth.py        # Login (negative/positive) and logout
+│   ├── test_cart.py        # Add-to-cart and remove-item
+│   └── test_checkout.py    # End-to-end checkout flow
 ├── conftest.py             # Browser launch args and viewport fixtures
 ├── pytest.ini              # Pytest configuration
-└── requirements.txt        # Dependencies
+└── requirements.txt        # Pinned dependencies
 ```
 
 ---
 
-## ⚙️ Setup
+## Setup
 
 **1. Clone the repo**
 ```bash
-git clone https://github.com/Govaden/playwright-pytest-sandbox.git
-cd playwright-pytest-sandbox
+git clone https://github.com/Govaden/playwright-e2e-tests.git
+cd playwright-e2e-tests
 ```
 
 **2. Create and activate a virtual environment**
@@ -57,7 +51,7 @@ playwright install
 
 ---
 
-## ▶️ Running Tests
+## Running Tests
 
 Run all tests:
 ```bash
@@ -81,20 +75,33 @@ pytest --browser firefox
 
 ---
 
-## 📊 Reports & Artifacts
+## Test Coverage
+
+| Test | File | Scenario |
+|---|---|---|
+| `test_negative_login` | `test_auth.py` | Login rejection: empty username, missing password, bad credentials, locked-out user |
+| `test_positive_login` | `test_auth.py` | Successful login → open product detail → sort Z→A (`error_user`/`problem_user` xfail) |
+| `test_logout` | `test_auth.py` | Log in, open menu, log out, return to login page (5 users) |
+| `test_cart` | `test_cart.py` | Add multiple items, verify badge count, remove one, verify count and remaining items |
+| `test_checkout` | `test_checkout.py` | Full checkout: add item → fill info → overview → finish → confirmation (empty name xfail) |
+
+---
+
+## Reports & Artifacts
 
 Configured in `pytest.ini` — generated automatically on each run:
 
 | Artifact | Location |
 |---|---|
 | HTML report | `reports/html/report.html` |
+| JUnit XML | `reports/junit/results.xml` |
 | Traces (on failure) | `reports/artifacts/` |
 | Videos (on failure) | `reports/artifacts/` |
 | Screenshots (on failure) | `reports/artifacts/` |
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 | Package | Version |
 |---|---|
@@ -105,7 +112,13 @@ Configured in `pytest.ini` — generated automatically on each run:
 
 ---
 
-## 📚 Resources
+## Continuous Integration
+
+GitHub Actions runs the suite on every push and pull request to `main`, plus a nightly scheduled run. See [`.github/workflows/playwright.yml`](.github/workflows/playwright.yml).
+
+---
+
+## Resources
 
 - [Playwright for Python — Docs](https://playwright.dev/python/docs/intro)
 - [pytest-playwright — GitHub](https://github.com/microsoft/playwright-pytest)
