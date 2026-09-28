@@ -1,6 +1,7 @@
 import re
 from playwright.sync_api import Page, expect
 import pytest
+from pytest_playwright.pytest_playwright import page
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 
@@ -87,9 +88,10 @@ def test_logout(page: Page, username, password):
     expect(inventory.inventory_list).to_be_visible()
 
     inventory.open_menu()
+    
     expect(inventory.menu_wrapper).to_have_attribute("aria-hidden", "false")
     expect(inventory.logout_sidebar_link).to_be_visible()
-
+    
     inventory.logout()
 
     expect(page).to_have_url("https://www.saucedemo.com/")
