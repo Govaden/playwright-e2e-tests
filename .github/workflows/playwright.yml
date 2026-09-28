@@ -11,6 +11,7 @@ on:
       - '**.md'
   schedule:
       - cron: '0 4 * * *'
+  workflow_dispatch:
   
 
 jobs:
