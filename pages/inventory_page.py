@@ -34,10 +34,6 @@ class InventoryPage:
         return self.page.locator("#logout_sidebar_link")
     
     @property
-    def logout_link(self) -> Locator:
-        return self.page.get_by_role("link", name="Logout")
-    
-    @property
     def item_details_name(self) -> Locator:
         return self.page.locator(".inventory_details_name")
     
@@ -69,5 +65,4 @@ class InventoryPage:
 
     def logout(self) -> None:
         """Click the Logout link in the sidebar menu. Assumes the menu is already open."""
-        self.logout_link.hover()
-        self.logout_link.press("Enter")
+        self.logout_sidebar_link.click()

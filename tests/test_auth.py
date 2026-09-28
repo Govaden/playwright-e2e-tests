@@ -89,7 +89,6 @@ def test_logout(page: Page, username, password):
     inventory.open_menu()
     expect(inventory.menu_wrapper).to_have_attribute("aria-hidden", "false")
     expect(inventory.logout_sidebar_link).to_be_visible()
-    expect(inventory.logout_link).to_be_visible()
 
     inventory.logout()
 
