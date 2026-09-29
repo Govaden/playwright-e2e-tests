@@ -87,6 +87,19 @@ pytest --browser firefox
 
 ---
 
+## Known Application Behaviour
+
+| User / Scenario | Expected behaviour | Actual behaviour |
+|---|---|---|
+| `error_user` — positive login | Lands on inventory page | Wrong product image opens; sort dropdown broken |
+| `problem_user` — positive login | Lands on inventory page | Sort dropdown broken; some product images incorrect |
+| `performance_glitch_user` — login | Lands on inventory page | Artificial delay causes page title to not appear within assertion timeout in CI |
+| `test_checkout` — empty first name | Validation error shown | Form submits without first name; checkout proceeds incorrectly |
+
+These are intentional defects in the SauceDemo application, not bugs in the test suite. Marking them `xfail` keeps CI green while documenting the known broken behaviour clearly.
+
+---
+
 ## Reports & Artifacts
 
 Configured in `pytest.ini` — generated automatically on each run:
