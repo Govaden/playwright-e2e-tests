@@ -1,10 +1,11 @@
+import os
 import pytest
 
 @pytest.fixture(scope="session")
 def browser_type_launch_args(browser_type_launch_args):
     return {
         **browser_type_launch_args,
-        "slow_mo": 500, 
+        "slow_mo": 0 if os.getenv("CI") else 500,
     }
 
 @pytest.fixture(scope="session")
