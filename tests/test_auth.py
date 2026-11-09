@@ -30,8 +30,8 @@ def test_negative_login(page: Page, username, password, expected_error):
 @pytest.mark.parametrize("username, password", [
     ("standard_user",  "secret_sauce"),
     ("visual_user", "secret_sauce"),
-    pytest.param("error_user", "secret_sauce", marks=pytest.mark.xfail(reason="error_user: wrong product opens, sort broken")),
-    pytest.param("problem_user",   "secret_sauce", marks=pytest.mark.xfail(reason="problem_user: sort dropdown broken")),
+    pytest.param("error_user", "secret_sauce", marks=pytest.mark.xfail(strict=True, reason="Known site bug: error_user cannot sort products; selecting a sort option shows an error alert and the dropdown does not change")),
+    pytest.param("problem_user",   "secret_sauce", marks=pytest.mark.xfail(strict=True, reason="Known site bug: problem_user opens the wrong product detail page from the inventory list")),
     pytest.param("performance_glitch_user", "secret_sauce", marks=pytest.mark.xfail(reason="performance_glitch_user: slow page load exceeds assertion timeout in CI"))
 ])
 
