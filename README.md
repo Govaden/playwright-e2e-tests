@@ -80,10 +80,11 @@ pytest --browser firefox
 | Test | File | Scenario |
 |---|---|---|
 | `test_negative_login` | `test_auth.py` | Login rejection: empty username, missing password, bad credentials, locked-out user |
-| `test_positive_login` | `test_auth.py` | Successful login → open product detail → sort Z→A (`error_user`/`problem_user` xfail) |
+| `test_positive_login` | `test_auth.py` | Successful login → open product detail → sort Z→A (`error_user`/`problem_user` strict xfail) |
 | `test_logout` | `test_auth.py` | Log in, open menu, log out, return to login page (5 users) |
 | `test_cart` | `test_cart.py` | Add multiple items, verify badge count, remove one, verify count and remaining items |
-| `test_checkout` | `test_checkout.py` | Full checkout: add item → fill info → overview → finish → confirmation (empty name xfail) |
+| `test_checkout` | `test_checkout.py` | Full checkout: add item → fill info → overview → finish → confirmation |
+| `test_checkout_missing_required_field` | `test_checkout.py` | Checkout validation: empty first name, last name or postal code shows the exact error and stays on step one |
 
 ---
 
@@ -91,12 +92,14 @@ pytest --browser firefox
 
 | User / Scenario | Expected behaviour | Actual behaviour |
 |---|---|---|
-| `error_user` — positive login | Lands on inventory page | Wrong product image opens; sort dropdown broken |
-| `problem_user` — positive login | Lands on inventory page | Sort dropdown broken; some product images incorrect |
-| `performance_glitch_user` — login | Lands on inventory page | Artificial delay causes page title to not appear within assertion timeout in CI |
-| `test_checkout` — empty first name | Validation error shown | Form submits without first name; checkout proceeds incorrectly |
+| `error_user` — positive login | Products sort Z→A | Selecting a sort option shows an error alert and the dropdown does not change |
+| `problem_user` — positive login | Selected product's detail page opens | A different product opens: Sauce Labs Backpack opens Sauce Labs Fleece Jacket |
 
 These are intentional defects in the SauceDemo application, not bugs in the test suite. Marking them `xfail` keeps CI green while documenting the known broken behaviour clearly.
+
+**xfail policy:** Only real site bugs use `xfail`, labelled `Known site bug: <what is wrong>` (`strict=True` if they always fail).
+Validation errors are tested normally.
+Timing problems are fixed in the test, or labelled `Test limitation: <why>`.
 
 ---
 
