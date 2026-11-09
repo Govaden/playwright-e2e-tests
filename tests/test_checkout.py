@@ -9,8 +9,7 @@ from pages.checkout_page import CheckoutPage
 @pytest.mark.parametrize("first_name, last_name, postal_code", [
     ("John", "Doe", "12345"),
     ("Jane", "Smith", "54321"),
-    pytest.param("", "Doe", "12345", marks=pytest.mark.xfail(reason="First name is required")),
-]) 
+])
 
 def test_checkout(page: Page, first_name: str, last_name: str, postal_code: str):
     login = LoginPage(page)
@@ -53,3 +52,38 @@ def test_checkout(page: Page, first_name: str, last_name: str, postal_code: str)
     expect(checkout.confirmation_message).to_be_visible()
 
     page.screenshot(path="test_results/test_checkout/screenshot_checkout.png")
+
+@pytest.mark.parametrize("first_name, last_name, postal_code, expected_error", [
+    ("", "Doe", "12345", "Error: First Name is required"),
+    ("John", "", "12345", "Error: Last Name is required"),
+    ("John", "Doe", "", "Error: Postal Code is required"),
+])
+
+def test_checkout_missing_required_field(page: Page, first_name: str, last_name: str, postal_code: str, expected_error: str):
+    login = LoginPage(page)
+    inventory = InventoryPage(page)
+    cart = CartPage(page)
+    checkout = CheckoutPage(page)
+
+    login.open()
+    login.login("standard_user", "secret_sauce")
+
+    expect(page).to_have_url("https://www.saucedemo.com/inventory.html")
+    expect(inventory.inventory_list).to_be_visible()
+
+    inventory.add_product_to_cart("Sauce Labs Backpack")
+    expect(cart.cart_badge).to_have_text("1")
+
+    inventory.open_cart()
+    expect(page).to_have_url("https://www.saucedemo.com/cart.html")
+
+    checkout.go_to_checkout()
+    expect(page).to_have_url(CheckoutPage.URL_STEP_ONE)
+
+    checkout.fill_information(first_name, last_name, postal_code)
+    checkout.continue_checkout()
+
+    expect(checkout.error_message).to_have_text(expected_error)
+    expect(page).to_have_url(CheckoutPage.URL_STEP_ONE)
+
+    page.screenshot(path="test_results/test_checkout/screenshot_checkout_validation.png")

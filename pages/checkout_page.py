@@ -42,7 +42,11 @@ class CheckoutPage:
     @property
     def confirmation_message(self) -> Locator:
         return self.page.locator("xpath=//h2[@class='complete-header']")
-    
+
+    @property
+    def error_message(self) -> Locator:
+        return self.page.locator('[data-test="error"]')
+
     def get_overview_item(self, product_name: str) -> Locator:
         """Return a locator matching the overview item by its name."""
         return self.page.locator(".cart_item").filter(has_text=product_name)
