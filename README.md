@@ -127,7 +127,7 @@ npx allure@3.33.0 generate allure-results --clean
 npx allure@3.33.0 open allure-report
 ```
 
-**CI:** each run uploads the report as the `allure-report` artifact. Pushes to `main` also publish it to GitHub Pages.
+**CI:** each run uploads the report as the `allure-report` artifact. Pushes to `main` also publish it to GitHub Pages: [latest report](https://govaden.github.io/playwright-e2e-tests/).
 
 ---
 
