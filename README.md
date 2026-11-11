@@ -109,7 +109,6 @@ Configured in `pytest.ini` — generated automatically on each run:
 
 | Artifact | Location |
 |---|---|
-| HTML report | `reports/html/report.html` |
 | JUnit XML | `reports/junit/results.xml` |
 | Traces (on failure) | `reports/artifacts/` |
 | Videos (on failure) | `reports/artifacts/` |
@@ -124,7 +123,6 @@ Configured in `pytest.ini` — generated automatically on each run:
 | pytest | 9.0.3 |
 | playwright | 1.59.0 |
 | pytest-playwright | 0.7.2 |
-| pytest-html | 4.2.0 |
 
 ---
 
