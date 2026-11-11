@@ -19,7 +19,7 @@ playwright-e2e-tests/
 │   ├── test_auth.py        # Login (negative/positive) and logout
 │   ├── test_cart.py        # Add-to-cart and remove-item
 │   └── test_checkout.py    # End-to-end checkout flow
-├── conftest.py             # Browser launch args and viewport fixtures
+├── conftest.py             # Browser launch args, viewport fixtures, Allure failure screenshot hook
 ├── pytest.ini              # Pytest configuration
 └── requirements.txt        # Pinned dependencies
 ```
@@ -109,10 +109,25 @@ Configured in `pytest.ini` — generated automatically on each run:
 
 | Artifact | Location |
 |---|---|
+| Allure results | `allure-results/` |
 | JUnit XML | `reports/junit/results.xml` |
 | Traces (on failure) | `reports/artifacts/` |
 | Videos (on failure) | `reports/artifacts/` |
 | Screenshots (on failure) | `reports/artifacts/` |
+
+---
+
+## Reporting
+
+Tests write [Allure](https://allurereport.org/) results to `allure-results/`. Viewing the report needs Node.js 22.18+.
+
+```bash
+pytest
+npx allure@3.33.0 generate allure-results --clean
+npx allure@3.33.0 open allure-report
+```
+
+**CI:** each run uploads the report as the `allure-report` artifact. Pushes to `main` also publish it to GitHub Pages.
 
 ---
 
