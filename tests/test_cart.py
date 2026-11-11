@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page, expect
 import pytest
 from pages.cart_page import CartPage
@@ -20,6 +21,7 @@ from pages.inventory_page import InventoryPage
       )
 ])
 
+@allure.title("Add items to cart and remove {product_to_remove}")
 def test_cart(page: Page, products_to_add, product_to_remove):
     login = LoginPage(page)
     inventory = InventoryPage(page)

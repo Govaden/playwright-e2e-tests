@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page, expect
 import pytest
 
@@ -11,6 +12,7 @@ from pages.checkout_page import CheckoutPage
     ("Jane", "Smith", "54321"),
 ])
 
+@allure.title("Complete checkout with postal code {postal_code}")
 def test_checkout(page: Page, first_name: str, last_name: str, postal_code: str):
     login = LoginPage(page)
     inventory = InventoryPage(page)
@@ -59,6 +61,7 @@ def test_checkout(page: Page, first_name: str, last_name: str, postal_code: str)
     ("John", "Doe", "", "Error: Postal Code is required"),
 ])
 
+@allure.title("Checkout error: {expected_error}")
 def test_checkout_missing_required_field(page: Page, first_name: str, last_name: str, postal_code: str, expected_error: str):
     login = LoginPage(page)
     inventory = InventoryPage(page)

@@ -1,4 +1,5 @@
 import re
+import allure
 from playwright.sync_api import Page, expect
 import pytest
 from pytest_playwright.pytest_playwright import page
@@ -16,6 +17,7 @@ INVENTORY_RENDER_TIMEOUT = 15_000
     ("locked_out_user", "secret_sauce", "Epic sadface: Sorry, this user has been locked out."),
 ])
 
+@allure.title("Login rejected: {expected_error}")
 def test_negative_login(page: Page, username, password, expected_error):
     login = LoginPage(page)
 
@@ -39,6 +41,7 @@ def test_negative_login(page: Page, username, password, expected_error):
     ("performance_glitch_user", "secret_sauce"),
 ])
 
+@allure.title("Log in, open product and sort as {username}")
 def test_positive_login(page: Page, username, password):
     login = LoginPage(page)
     inventory = InventoryPage(page)
@@ -75,6 +78,7 @@ def test_positive_login(page: Page, username, password):
     ("performance_glitch_user", "secret_sauce"),
 ])
 
+@allure.title("Log out as {username}")
 def test_logout(page: Page, username, password):
     login = LoginPage(page)
     inventory = InventoryPage(page)
