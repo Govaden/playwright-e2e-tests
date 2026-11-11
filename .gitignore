@@ -8,6 +8,8 @@ __pycache__/
 reports/
 test_results/
 test-results/
+allure-results/
+allure-report/
 
 # Playwright
 node_modules/

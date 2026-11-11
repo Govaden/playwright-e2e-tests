@@ -123,6 +123,7 @@ Configured in `pytest.ini` — generated automatically on each run:
 | pytest | 9.0.3 |
 | playwright | 1.59.0 |
 | pytest-playwright | 0.7.2 |
+| allure-pytest | 2.16.2 |
 
 ---
 
