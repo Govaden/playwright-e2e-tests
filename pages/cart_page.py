@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Locator, Page
 
 class CartPage:
@@ -19,6 +20,7 @@ class CartPage:
         """Return a locator matching the cart item by its name."""
         return self.page.locator(".inventory_item_name").filter(has_text=product_name)
     
+    @allure.step("Remove {product_name} from cart")
     def remove_item(self, product_name: str) -> None:
         """Click the Remove button for the given product in the cart."""
         self.page.locator(".cart_item").filter(

@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Locator, Page
 
 
@@ -36,22 +37,28 @@ class LoginPage:
     
     # Actions
 
+    @allure.step("Open login page")
     def open(self) -> None:
         self.page.goto(self.URL)
  
+    @allure.step("Enter username {username}")
     def fill_username(self, username: str) -> None:
         self.username_input.fill(username)
  
     def fill_password(self, password: str) -> None:
-        self.password_input.fill(password)
+        # Context manager instead of a decorator so the password is not recorded as a step parameter.
+        with allure.step("Enter password"):
+            self.password_input.fill(password)
 
+    @allure.step("Click Login")
     def submit(self) -> None:
         self.login_button.click()
 
     def login(self, username: str, password: str) -> None:
         """Fill credentials and click Login. Skips empty fields."""
-        if username:
-            self.fill_username(username)
-        if password:
-            self.fill_password(password)
-        self.submit()
+        with allure.step(f"Log in as {username}" if username else "Log in without username"):
+            if username:
+                self.fill_username(username)
+            if password:
+                self.fill_password(password)
+            self.submit()

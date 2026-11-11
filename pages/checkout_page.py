@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Locator, Page
 
 class CheckoutPage:
@@ -53,16 +54,20 @@ class CheckoutPage:
     
     # Actions
 
+    @allure.step("Fill checkout information")
     def fill_information(self, first_name: str, last_name: str, postal_code: str) -> None:
         self.first_name_input.fill(first_name)
         self.last_name_input.fill(last_name)
         self.postal_code_input.fill(postal_code)
 
+    @allure.step("Go to checkout")
     def go_to_checkout(self) -> None:
         self.checkout_button.click()
 
+    @allure.step("Continue checkout")
     def continue_checkout(self) -> None:
         self.continue_button.click()
 
+    @allure.step("Finish checkout")
     def finish_checkout(self) -> None:
         self.finish_button.click()
