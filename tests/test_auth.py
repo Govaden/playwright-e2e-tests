@@ -8,7 +8,13 @@ from pages.inventory_page import InventoryPage
 
 # performance_glitch_user blocks the browser for 5 s on every inventory render,
 # which equals Playwright's default 5 s expect timeout. 15 s allows two renders plus CI margin.
-INVENTORY_RENDER_TIMEOUT = 15_000
+# Only this user gets the longer timeout, so a real slowdown for other users still fails.
+SLOW_USER_RENDER_TIMEOUTS = {"performance_glitch_user": 15_000}
+DEFAULT_RENDER_TIMEOUT = 5_000
+
+def inventory_render_timeout(username: str) -> int:
+    """Return the expect timeout (ms) for the inventory page for this user."""
+    return SLOW_USER_RENDER_TIMEOUTS.get(username, DEFAULT_RENDER_TIMEOUT)
 
 @pytest.mark.parametrize("username, password, expected_error", [
     ("",              "",             "Epic sadface: Username is required"),
@@ -43,6 +49,7 @@ def test_negative_login(page: Page, username, password, expected_error):
 
 @allure.title("Log in, open product and sort as {username}")
 def test_positive_login(page: Page, username, password):
+    render_timeout = inventory_render_timeout(username)
     login = LoginPage(page)
     inventory = InventoryPage(page)
 
@@ -56,8 +63,8 @@ def test_positive_login(page: Page, username, password):
     login.login_button.hover()
     login.submit()
 
-    expect(page).to_have_url("https://www.saucedemo.com/inventory.html", timeout=INVENTORY_RENDER_TIMEOUT)
-    expect(inventory.page_title).to_have_text("Products", timeout=INVENTORY_RENDER_TIMEOUT)
+    expect(page).to_have_url("https://www.saucedemo.com/inventory.html", timeout=render_timeout)
+    expect(inventory.page_title).to_have_text("Products", timeout=render_timeout)
 
     inventory.open_product("Sauce Labs Backpack")
     expect(page).to_have_url(re.compile(r".*inventory-item.*"))
@@ -66,7 +73,7 @@ def test_positive_login(page: Page, username, password):
     page.go_back()
 
     inventory.sort_products("za")  # Sort Z → A
-    expect(inventory.sort_dropdown).to_have_value("za", timeout=INVENTORY_RENDER_TIMEOUT)
+    expect(inventory.sort_dropdown).to_have_value("za", timeout=render_timeout)
 
     page.screenshot(path="test_results/test_auth/screenshot_positive_login.png")
 
@@ -80,6 +87,7 @@ def test_positive_login(page: Page, username, password):
 
 @allure.title("Log out as {username}")
 def test_logout(page: Page, username, password):
+    render_timeout = inventory_render_timeout(username)
     login = LoginPage(page)
     inventory = InventoryPage(page)
 
@@ -92,8 +100,8 @@ def test_logout(page: Page, username, password):
 
     login.submit()
 
-    expect(page).to_have_url("https://www.saucedemo.com/inventory.html", timeout=INVENTORY_RENDER_TIMEOUT)
-    expect(inventory.inventory_list).to_be_visible(timeout=INVENTORY_RENDER_TIMEOUT)
+    expect(page).to_have_url("https://www.saucedemo.com/inventory.html", timeout=render_timeout)
+    expect(inventory.inventory_list).to_be_visible(timeout=render_timeout)
 
     inventory.open_menu()
     expect(inventory.menu_wrapper).to_have_attribute("aria-hidden", "false")
