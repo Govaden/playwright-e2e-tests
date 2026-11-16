@@ -136,7 +136,7 @@ npx allure@3.33.0 open allure-report
 | Package | Version |
 |---|---|
 | pytest | 9.0.3 |
-| playwright | 1.59.0 |
+| playwright | 1.65.2 |
 | pytest-playwright | 0.7.2 |
 | allure-pytest | 2.16.2 |
 
