@@ -3,7 +3,6 @@ from playwright.sync_api import Page, expect
 import pytest
 
 from pages.inventory_page import InventoryPage
-from pages.login_page import LoginPage
 from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
 
@@ -13,14 +12,11 @@ from pages.checkout_page import CheckoutPage
 ])
 
 @allure.title("Complete checkout with postal code {postal_code}")
-def test_checkout(page: Page, first_name: str, last_name: str, postal_code: str):
-    login = LoginPage(page)
+def test_checkout(logged_in_page: Page, first_name: str, last_name: str, postal_code: str):
+    page = logged_in_page
     inventory = InventoryPage(page)
     cart = CartPage(page)
     checkout = CheckoutPage(page)
-
-    login.open()
-    login.login("standard_user", "secret_sauce")
 
     expect(page).to_have_url(InventoryPage.URL_PATTERN)
     expect(inventory.inventory_list).to_be_visible()
@@ -62,14 +58,11 @@ def test_checkout(page: Page, first_name: str, last_name: str, postal_code: str)
 ])
 
 @allure.title("Checkout error: {expected_error}")
-def test_checkout_missing_required_field(page: Page, first_name: str, last_name: str, postal_code: str, expected_error: str):
-    login = LoginPage(page)
+def test_checkout_missing_required_field(logged_in_page: Page, first_name: str, last_name: str, postal_code: str, expected_error: str):
+    page = logged_in_page
     inventory = InventoryPage(page)
     cart = CartPage(page)
     checkout = CheckoutPage(page)
-
-    login.open()
-    login.login("standard_user", "secret_sauce")
 
     expect(page).to_have_url(InventoryPage.URL_PATTERN)
     expect(inventory.inventory_list).to_be_visible()

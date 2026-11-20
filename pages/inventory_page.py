@@ -46,6 +46,10 @@ class InventoryPage:
 
     # Actions
 
+    @allure.step("Open inventory page")
+    def open(self) -> None:
+        self.page.goto(self.URL)
+
     def get_product_item(self, product_name: str) -> Locator:
         """Return a locator matching the inventory item by its name."""
         return self.page.locator(".inventory_item").filter(has_text=product_name)

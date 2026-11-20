@@ -2,7 +2,6 @@ import allure
 from playwright.sync_api import Page, expect
 import pytest
 from pages.cart_page import CartPage
-from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 
 
@@ -22,13 +21,10 @@ from pages.inventory_page import InventoryPage
 ])
 
 @allure.title("Add items to cart and remove {product_to_remove}")
-def test_cart(page: Page, products_to_add, product_to_remove):
-    login = LoginPage(page)
+def test_cart(logged_in_page: Page, products_to_add, product_to_remove):
+    page = logged_in_page
     inventory = InventoryPage(page)
     cart = CartPage(page)
-
-    login.open()
-    login.login("standard_user", "secret_sauce")
 
     expect(page).to_have_url(InventoryPage.URL_PATTERN)
     expect(inventory.inventory_list).to_be_visible()
