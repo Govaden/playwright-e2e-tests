@@ -1,9 +1,11 @@
+import re
 import allure
 from playwright.sync_api import Locator, Page
 
 class InventoryPage:
 
-    URL = "https://www.saucedemo.com/inventory.html"
+    URL = "/inventory.html"
+    URL_PATTERN = re.compile(r"/inventory\.html$")
 
     def __init__(self, page: Page):
         self.page = page

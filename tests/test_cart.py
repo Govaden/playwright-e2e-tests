@@ -30,7 +30,7 @@ def test_cart(page: Page, products_to_add, product_to_remove):
     login.open()
     login.login("standard_user", "secret_sauce")
 
-    expect(page).to_have_url("https://www.saucedemo.com/inventory.html")
+    expect(page).to_have_url(InventoryPage.URL_PATTERN)
     expect(inventory.inventory_list).to_be_visible()
 
     for product_name in products_to_add:
@@ -39,7 +39,7 @@ def test_cart(page: Page, products_to_add, product_to_remove):
     expect(cart.cart_badge).to_have_text(str(len(products_to_add)))
 
     inventory.open_cart()
-    expect(page).to_have_url("https://www.saucedemo.com/cart.html")
+    expect(page).to_have_url(CartPage.URL_PATTERN)
     
     for product_name in products_to_add:
         expect(cart.get_product_item(product_name)).to_be_visible()

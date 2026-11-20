@@ -1,10 +1,12 @@
+import re
 import allure
 from playwright.sync_api import Locator, Page
 
 
 class LoginPage:
 
-    URL = "https://www.saucedemo.com/"
+    URL = "/"
+    URL_PATTERN = re.compile(r"^https?://[^/]+/$")
 
     def __init__(self, page: Page): 
         self.page = page

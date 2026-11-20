@@ -1,11 +1,15 @@
+import re
 import allure
 from playwright.sync_api import Locator, Page
 
 class CheckoutPage:
 
-    URL_STEP_ONE = "https://www.saucedemo.com/checkout-step-one.html"
-    URL_STEP_TWO = "https://www.saucedemo.com/checkout-step-two.html"
-    URL_COMPLETE = "https://www.saucedemo.com/checkout-complete.html"
+    URL_STEP_ONE = "/checkout-step-one.html"
+    URL_STEP_TWO = "/checkout-step-two.html"
+    URL_COMPLETE = "/checkout-complete.html"
+    PATTERN_STEP_ONE = re.compile(r"/checkout-step-one\.html$")
+    PATTERN_STEP_TWO = re.compile(r"/checkout-step-two\.html$")
+    PATTERN_COMPLETE = re.compile(r"/checkout-complete\.html$")
 
     def __init__(self, page: Page):
         self.page = page

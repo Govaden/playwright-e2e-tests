@@ -63,7 +63,7 @@ def test_positive_login(page: Page, username, password):
     login.login_button.hover()
     login.submit()
 
-    expect(page).to_have_url("https://www.saucedemo.com/inventory.html", timeout=render_timeout)
+    expect(page).to_have_url(InventoryPage.URL_PATTERN, timeout=render_timeout)
     expect(inventory.page_title).to_have_text("Products", timeout=render_timeout)
 
     inventory.open_product("Sauce Labs Backpack")
@@ -100,7 +100,7 @@ def test_logout(page: Page, username, password):
 
     login.submit()
 
-    expect(page).to_have_url("https://www.saucedemo.com/inventory.html", timeout=render_timeout)
+    expect(page).to_have_url(InventoryPage.URL_PATTERN, timeout=render_timeout)
     expect(inventory.inventory_list).to_be_visible(timeout=render_timeout)
 
     inventory.open_menu()
@@ -109,7 +109,7 @@ def test_logout(page: Page, username, password):
     
     inventory.logout()
 
-    expect(page).to_have_url("https://www.saucedemo.com/")
+    expect(page).to_have_url(LoginPage.URL_PATTERN)
     expect(login.username_input).to_be_visible()
     expect(login.password_input).to_be_visible()
     expect(login.login_button).to_be_visible()

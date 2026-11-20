@@ -22,7 +22,7 @@ def test_checkout(page: Page, first_name: str, last_name: str, postal_code: str)
     login.open()
     login.login("standard_user", "secret_sauce")
 
-    expect(page).to_have_url("https://www.saucedemo.com/inventory.html")
+    expect(page).to_have_url(InventoryPage.URL_PATTERN)
     expect(inventory.inventory_list).to_be_visible()
 
     product = inventory.get_product_item("Sauce Labs Backpack")
@@ -32,11 +32,11 @@ def test_checkout(page: Page, first_name: str, last_name: str, postal_code: str)
     expect(cart.cart_badge).to_have_text("1")
 
     inventory.open_cart()
-    expect(page).to_have_url("https://www.saucedemo.com/cart.html")
+    expect(page).to_have_url(CartPage.URL_PATTERN)
     expect(cart.get_product_item("Sauce Labs Backpack")).to_be_visible()
 
     checkout.go_to_checkout()
-    expect(page).to_have_url(CheckoutPage.URL_STEP_ONE)
+    expect(page).to_have_url(CheckoutPage.PATTERN_STEP_ONE)
 
     checkout.fill_information(first_name, last_name, postal_code)
     expect(checkout.first_name_input).to_have_value(first_name)
@@ -44,13 +44,13 @@ def test_checkout(page: Page, first_name: str, last_name: str, postal_code: str)
     expect(checkout.postal_code_input).to_have_value(postal_code)
 
     checkout.continue_checkout()
-    expect(page).to_have_url(CheckoutPage.URL_STEP_TWO)
+    expect(page).to_have_url(CheckoutPage.PATTERN_STEP_TWO)
 
     expect(checkout.get_overview_item("Sauce Labs Backpack")).to_be_visible()
     expect(checkout.summary_total).to_be_visible()
 
     checkout.finish_checkout()
-    expect(page).to_have_url(CheckoutPage.URL_COMPLETE)
+    expect(page).to_have_url(CheckoutPage.PATTERN_COMPLETE)
     expect(checkout.confirmation_message).to_be_visible()
 
     page.screenshot(path="test_results/test_checkout/screenshot_checkout.png")
@@ -71,22 +71,22 @@ def test_checkout_missing_required_field(page: Page, first_name: str, last_name:
     login.open()
     login.login("standard_user", "secret_sauce")
 
-    expect(page).to_have_url("https://www.saucedemo.com/inventory.html")
+    expect(page).to_have_url(InventoryPage.URL_PATTERN)
     expect(inventory.inventory_list).to_be_visible()
 
     inventory.add_product_to_cart("Sauce Labs Backpack")
     expect(cart.cart_badge).to_have_text("1")
 
     inventory.open_cart()
-    expect(page).to_have_url("https://www.saucedemo.com/cart.html")
+    expect(page).to_have_url(CartPage.URL_PATTERN)
 
     checkout.go_to_checkout()
-    expect(page).to_have_url(CheckoutPage.URL_STEP_ONE)
+    expect(page).to_have_url(CheckoutPage.PATTERN_STEP_ONE)
 
     checkout.fill_information(first_name, last_name, postal_code)
     checkout.continue_checkout()
 
     expect(checkout.error_message).to_have_text(expected_error)
-    expect(page).to_have_url(CheckoutPage.URL_STEP_ONE)
+    expect(page).to_have_url(CheckoutPage.PATTERN_STEP_ONE)
 
     page.screenshot(path="test_results/test_checkout/screenshot_checkout_validation.png")
