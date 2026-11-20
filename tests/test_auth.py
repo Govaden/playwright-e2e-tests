@@ -2,7 +2,6 @@ import re
 import allure
 from playwright.sync_api import Page, expect
 import pytest
-from pytest_playwright.pytest_playwright import page
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
 
@@ -58,7 +57,6 @@ def test_positive_login(page: Page, username, password):
     login.fill_password(password)
     expect(login.password_input).to_have_value(password)
 
-    login.login_button.hover()
     login.submit()
 
     expect(page).to_have_url(InventoryPage.URL_PATTERN, timeout=render_timeout)
