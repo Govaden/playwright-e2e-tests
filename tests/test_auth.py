@@ -37,8 +37,6 @@ def test_negative_login(page: Page, username, password, expected_error):
     expect(login.password_input).to_have_value(password)
     expect(login.login_button).to_be_visible()
 
-    page.screenshot(path="test_results/test_auth/screenshot_negative_login.png")
-
 @pytest.mark.parametrize("username, password", [
     ("standard_user",  "secret_sauce"),
     ("visual_user", "secret_sauce"),
@@ -74,8 +72,6 @@ def test_positive_login(page: Page, username, password):
 
     inventory.sort_products("za")  # Sort Z → A
     expect(inventory.sort_dropdown).to_have_value("za", timeout=render_timeout)
-
-    page.screenshot(path="test_results/test_auth/screenshot_positive_login.png")
 
 @pytest.mark.parametrize("username, password", [
     ("standard_user",  "secret_sauce"),
@@ -113,5 +109,3 @@ def test_logout(page: Page, username, password):
     expect(login.username_input).to_be_visible()
     expect(login.password_input).to_be_visible()
     expect(login.login_button).to_be_visible()
-
-    page.screenshot(path="test_results/test_auth/screenshot_logout.png")

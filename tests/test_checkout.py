@@ -49,8 +49,6 @@ def test_checkout(logged_in_page: Page, first_name: str, last_name: str, postal_
     expect(page).to_have_url(CheckoutPage.PATTERN_COMPLETE)
     expect(checkout.confirmation_message).to_be_visible()
 
-    page.screenshot(path="test_results/test_checkout/screenshot_checkout.png")
-
 @pytest.mark.parametrize("first_name, last_name, postal_code, expected_error", [
     ("", "Doe", "12345", "Error: First Name is required"),
     ("John", "", "12345", "Error: Last Name is required"),
@@ -81,5 +79,3 @@ def test_checkout_missing_required_field(logged_in_page: Page, first_name: str, 
 
     expect(checkout.error_message).to_have_text(expected_error)
     expect(page).to_have_url(CheckoutPage.PATTERN_STEP_ONE)
-
-    page.screenshot(path="test_results/test_checkout/screenshot_checkout_validation.png")

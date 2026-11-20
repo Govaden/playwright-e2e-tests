@@ -48,5 +48,3 @@ def test_cart(logged_in_page: Page, products_to_add, product_to_remove):
     for product_name in products_to_add:
         if product_name != product_to_remove:
             expect(cart.get_product_item(product_name)).to_be_visible()
-
-    page.screenshot(path="test_results/test_cart/screenshot_cart_remove.png")
