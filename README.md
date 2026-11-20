@@ -19,8 +19,8 @@ playwright-e2e-tests/
 │   ├── test_auth.py        # Login (negative/positive) and logout
 │   ├── test_cart.py        # Add-to-cart and remove-item
 │   └── test_checkout.py    # End-to-end checkout flow
-├── conftest.py             # Browser launch args, viewport fixtures, Allure failure screenshot hook
-├── pytest.ini              # Pytest configuration
+├── conftest.py             # Browser launch args, viewport, logged-in page fixture, Allure failure screenshot hook
+├── pytest.ini              # Pytest configuration and base URL
 └── requirements.txt        # Pinned dependencies
 ```
 
@@ -73,6 +73,11 @@ Run with a specific browser:
 pytest --browser firefox
 ```
 
+Run against another host (overrides `base_url` in `pytest.ini`):
+```bash
+pytest --base-url https://example.com
+```
+
 ---
 
 ## Test Coverage
@@ -85,6 +90,8 @@ pytest --browser firefox
 | `test_cart` | `test_cart.py` | Add multiple items, verify badge count, remove one, verify count and remaining items |
 | `test_checkout` | `test_checkout.py` | Full checkout: add item → fill info → overview → finish → confirmation |
 | `test_checkout_missing_required_field` | `test_checkout.py` | Checkout validation: empty first name, last name or postal code shows the exact error and stays on step one |
+
+Auth tests log in through the UI. Cart and checkout tests start logged in: `standard_user` logs in once per run and the saved session (`playwright/.auth/`, git-ignored) is reused.
 
 ---
 
